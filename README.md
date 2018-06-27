@@ -2,6 +2,9 @@
 
 Upload videos from your device and view then crossfade in the player.
 
+DEMO:
+https://yuccayucca.github.io/local-video-crossfade/
+
 External libraries used:
 
 jQuery 
