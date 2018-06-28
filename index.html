@@ -84,10 +84,11 @@
 	</div>
 	<div id="video-container">
 		<video id="vid" class="video-js">
-		    <p class="vjs-no-js">
-		      To view this video please enable JavaScript, and consider upgrading to a web browser that
-		      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-		    </p>
+			<source src="#" type="video/mp4">
+			<p class="vjs-no-js">
+				To view this video please enable JavaScript, and consider upgrading to a web browser that
+				<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+			</p>
 		  </video>
 	</div>
 
@@ -98,11 +99,11 @@
 		    'use strict'
 		    var URL = window.URL || window.webkitURL
 		    
-                    videojs('vid', {
-			controls: true,
-			autoplay: true,
-			muted: true
-		     });
+			videojs('vid', {
+				controls: true,
+				autoplay: true,
+				muted: true
+			});
 		   
 		    var fileInput = $('#fileInput');
 		    var files = [];
