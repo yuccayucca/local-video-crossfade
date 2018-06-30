@@ -6,82 +6,19 @@
 
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://vjs.zencdn.net/7.0.3/video-js.css" rel="stylesheet">
+	<link href="style.css" rel="stylesheet">
 
   	<script data-require="jquery" data-semver="3.1.1" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 
 <body>
-	<style>
-		body{background: #000;}
-		span{font-family: "Segoe UI Symbol"; margin-left: -15px;}
-		video {display: block; position: fixed; width: auto; height: 100%; max-height: 100%; top: 0; left: 50%; }
-
-		#video-container{
-			opacity: 0; 
-			transition: opacity 1s ease-in-out;
-		}
-
-		#vid { 
-			position: absolute; 
-			top: 0; 
-			left: 0; 
-			width: 100%; 
-			height: 100%; 
-			display:none;
-		}
-
-		#button-container{
-			width: 100%;
-			height: 100vh;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			opacity: 1;
-	  		transition: opacity .25s ease-in-out;
-		}
-
-		.btn-control{
-			background-color: rgba(255, 255, 255, 0.7) !important;
-			color: #000;
-			font-weight: 300;
-			font-size: 60px;
-			padding: 110px 50px;
-			border: none !important;
-			border-radius: 20px;
-			z-index: 99;
-			margin: 10px;
-			max-width: 390px;
-			max-height: 330px;
-		}
-
-		.btn-control:focus, .btn-control:hover, 
-		.btn-control:active{
-			background-color: rgba(255, 255, 255, 0.9) !important;
-			outline: none !important;
-	   		box-shadow: none !important;
-	   		color: #000 !important;
-		}
-
-		#addButton{}
-
-		#playButton{
-	    		display:none;
-			padding: 110px 60px;
-		}
-
-		.video-js .vjs-big-play-button{
-			display: none !important;
-		}
-
-	</style>
 
 	<div id="button-container">
 		<input id="fileInput" type="file" accept="video/*" multiple style="display:none" />
-	    
 	    <button id="playButton" type="button" class="btn btn-primary btn-control">Keep Going</button>
 	    <button id="addButton" type="button" class="btn btn-primary btn-control">Add Videos</button>
-
 	</div>
+	
 	<div id="video-container">
 		<video id="vid" class="video-js">
 			<source src="#" type="video/mp4">
@@ -89,117 +26,11 @@
 				To view this video please enable JavaScript, and consider upgrading to a web browser that
 				<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
 			</p>
-		  </video>
+		</video>
 	</div>
-
-  	<script src="https://vjs.zencdn.net/7.0.3/video.js"></script>
-  
-	<script>
-		(function localVideosCrossfade() {
-		    'use strict'
-		    var URL = window.URL || window.webkitURL
-		    
-			videojs('vid', {
-				controls: true,
-				autoplay: true,
-				muted: true
-			});
-		   
-		    var fileInput = $('#fileInput');
-		    var files = [];
-		    
-		    var index;
-		    var count;
-		    var k = 0;
-
-		    //listen to input change
-		    fileInput.change(function () {
-		        files=[];
-		        for (var index = 0; index < fileInput[0].files.length; index++) {
-		            var file = fileInput[0].files[index];
-		            files.push(file);
-		        }
-		        index=0;
-		        count=0;
-		        
-		        //hide buttons
-		        $('#video-container').css("opacity", 1);
-		        $('#vid').css("display", "block");
-		        $('#button-container').css({"opacity": 0, "z-index":-1});
-
-		        //restart player when new files added
-		        updatePlayer(index, count);
-		       
-		    });
-
-		    $('#addButton').click(function () {
-		        fileInput.click();
-		    });
-
-		    $('#playButton').click(function () {
-		    	$('#video-container').css("opacity", 1);
-		        $('#button-container').css({"opacity": 0, "z-index":-1});
-		        videojs('vid').ready(function () {
-		        	this.autoplay(true);
-		        	this.play();
-		        })
-		    });
-
-	    	//update player
-		function updatePlayer(i,c) {
-
-		        index=i;
-		        count=c;
-			    
-			//apply fade if not the very first video
-			if(count >0){
-				$('#vid').fadeToggle(3000, 'linear');
-			}
-				
-		        if (files.length > 0) {
-		    		videojs('vid').ready(function () {
-					var player = this;
-					player.autoplay(true);
-
-					if(index >= files.length){
-						index = 0;
-					}
-
-					var fileType = files[index].type;
-					var fileURL = URL.createObjectURL(files[index]);
-
-					player.src({type: fileType.includes("mp4") ? fileType : "video/webm" , src: fileURL});
-
-					//played through all videos, give user options to continue or add other videos
-					if(index === 0 && count > 0){
-						player.autoplay(false);
-
-						$('#video-container').css("opacity", .5);
-						$('#button-container').css({"opacity": 1, "z-index":99});
-					}
-
-					player.on('timeupdate', function () {
-
-						//fade out in last 5 sec
-						if(this.currentTime() > this.duration() -5){
-							if (k < 1) {//run once
-								
-								$('#vid').fadeToggle(3000, 'linear',function(){
-									$('#playButton').css("display", "block");
-									$('#addButton').text("New Videos");
-									//update the video player
-									updatePlayer(++index, ++count, files);
-								});
-							}
-							k++;
-						}
-					})
-					k=0;
-				})
-			}
-		    };
-		})()
-
-	</script>
+	
+	<script src="https://vjs.zencdn.net/7.0.3/video.js"></script>
+	<script src="video.js"></script>
+	
 </body>
 </html>
